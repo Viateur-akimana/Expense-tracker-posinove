@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Expense } from "../types/expense";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 type Props = {
   onAddExpense: (expense: Expense) => void;
@@ -18,7 +18,7 @@ const categories = [
   "Utilities",
   "Education",
   "Travel",
-  "Other"
+  "Other",
 ];
 
 const ExpenseForm: React.FC<Props> = ({ onAddExpense, editingExpense }) => {
@@ -63,21 +63,22 @@ const ExpenseForm: React.FC<Props> = ({ onAddExpense, editingExpense }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-gray-100 rounded-md">
-      <div className="mb-2">
+    <form onSubmit={handleSubmit} className="p-6 bg-white rounded-lg shadow-md max-w-md mx-auto">
+      <h2 className="text-xl font-semibold mb-4 text-center">{editingExpense ? "Update Expense" : "Add Expense"}</h2>
+      <div className="mb-4">
         <input
           type="number"
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.valueAsNumber || "")}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div className="mb-2">
+      <div className="mb-4">
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="" disabled>Select Category</option>
           {categories.map((cat) => (
@@ -85,23 +86,24 @@ const ExpenseForm: React.FC<Props> = ({ onAddExpense, editingExpense }) => {
           ))}
         </select>
       </div>
-      <div className="mb-2">
+      <div className="mb-4">
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div className="mb-2">
+      <div className="mb-4">
         <textarea
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows={3}
         />
       </div>
-      <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+      <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full hover:bg-blue-600 transition duration-200">
         {editingExpense ? "Update Expense" : "Add Expense"}
       </button>
     </form>

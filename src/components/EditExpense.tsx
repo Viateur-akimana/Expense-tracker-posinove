@@ -26,13 +26,30 @@ const EditExpense: React.FC<Props> = ({ expenses, onUpdateExpense }) => {
   };
 
   if (!editingExpense) {
-    return <div>Loading...</div>; // Handle loading state
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-lg font-semibold">Loading...</div> {/* Handle loading state */}
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-lg font-bold">Edit Expense</h2>
-      <ExpenseForm onAddExpense={handleUpdateExpense} editingExpense={editingExpense} />
+    <div className="container mx-auto p-6">
+      <h2 className="text-2xl font-bold text-center mb-6">Edit Expense</h2>
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <ExpenseForm 
+          onAddExpense={handleUpdateExpense} 
+          editingExpense={editingExpense} 
+        />
+      </div>
+      <div className="text-center mt-4">
+        <button 
+          onClick={() => navigate("/")} 
+          className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition duration-200"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   );
 };
