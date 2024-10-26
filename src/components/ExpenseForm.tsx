@@ -1,25 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Expense } from "../types/expense";
+import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   onAddExpense: (expense: Expense) => void;
+  editingExpense: Expense | null; // Prop for editing
 };
 
-const ExpenseForm: React.FC<Props> = ({ onAddExpense }) => {
+const categories = [
+  "Food & Dining",
+  "Housing",
+  "Transportation",
+  "Shopping",
+  "Entertainment",
+  "Healthcare",
+  "Utilities",
+  "Education",
+  "Travel",
+  "Other"
+];
+
+const ExpenseForm: React.FC<Props> = ({ onAddExpense, editingExpense }) => {
   const [amount, setAmount] = useState<number | "">("");
-  const [category, setCategory] = useState("");
-  const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const navigate = useNavigate();
+
+  // Populate form fields if editing an existing expense
+  useEffect(() => {
+    if (editingExpense) {
+      setAmount(editingExpense.amount);
+      setCategory(editingExpense.category);
+      setDate(editingExpense.date);
+      setDescription(editingExpense.description);
+    } else {
+      setAmount("");
+      setCategory("");
+      setDate("");
+      setDescription("");
+    }
+  }, [editingExpense]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || !category || !date || !description) {
-      alert("Please fill out all fields.");
+    if (amount === "" || isNaN(Number(amount)) || !category || !date || !description) {
+      alert("Please fill out all fields correctly.");
       return;
     }
 
     const newExpense: Expense = {
-      id: crypto.randomUUID(),
+      id: editingExpense ? editingExpense.id : uuidv4(), // Use existing id for editing
       amount: Number(amount),
       category,
       date,
@@ -27,10 +59,7 @@ const ExpenseForm: React.FC<Props> = ({ onAddExpense }) => {
     };
 
     onAddExpense(newExpense);
-    setAmount("");
-    setCategory("");
-    setDate("");
-    setDescription("");
+    navigate("/"); // Navigate back to home or another route after submission
   };
 
   return (
@@ -45,13 +74,16 @@ const ExpenseForm: React.FC<Props> = ({ onAddExpense }) => {
         />
       </div>
       <div className="mb-2">
-        <input
-          type="text"
-          placeholder="Category"
+        <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           className="w-full p-2 border rounded"
-        />
+        >
+          <option value="" disabled>Select Category</option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>{cat}</option>
+          ))}
+        </select>
       </div>
       <div className="mb-2">
         <input
@@ -70,7 +102,7 @@ const ExpenseForm: React.FC<Props> = ({ onAddExpense }) => {
         />
       </div>
       <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
-        Add Expense
+        {editingExpense ? "Update Expense" : "Add Expense"}
       </button>
     </form>
   );

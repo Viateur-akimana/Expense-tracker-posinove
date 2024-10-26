@@ -8,11 +8,13 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
+
+    // Attempt to log in
     if (login(username, password)) {
-      navigate("/expenses");
+      navigate("/"); // Redirect to home on success
     } else {
-      alert("Invalid credentials!");
+      alert("Invalid credentials!"); // Show error on failure
     }
   };
 
@@ -36,6 +38,7 @@ const Login: React.FC = () => {
       <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
         Login
       </button>
+      <p>Don't have an account? <a href="/signup">Register here</a></p>
     </form>
   );
 };
