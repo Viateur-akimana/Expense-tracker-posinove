@@ -24,14 +24,13 @@ const ExpenseList: React.FC<Props> = ({ expenses, onDeleteExpense }) => {
   const [filter, setFilter] = useState<string>("");
   const navigate = useNavigate();
 
-  // Filter expenses based on the category
   const filteredExpenses = expenses.filter((expense) =>
     filter ? expense.category === filter : true
   );
 
   return (
     <div className="mt-8 max-w-full px-4">
-      {/* Filter and Add Expense Button */}
+
       <div className="flex flex-col md:flex-row gap-5 mb-4">
         <select
           value={filter}
@@ -50,7 +49,6 @@ const ExpenseList: React.FC<Props> = ({ expenses, onDeleteExpense }) => {
         </button>
       </div>
 
-      {/* Expense Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg border border-gray-300">
           <thead className="bg-blue-500 text-white">
@@ -71,13 +69,13 @@ const ExpenseList: React.FC<Props> = ({ expenses, onDeleteExpense }) => {
                 <td className="py-2 px-4 border-b">{expense.description}</td>
                 <td className="py-2 px-4 border-b">
                   <button
-                    onClick={() => navigate(`/edit/${expense.id}`)} // Navigate to the edit page for the selected expense
+                    onClick={() => navigate(`/edit/${expense.id}`)}
                     className="bg-yellow-500 text-white py-1 px-2 rounded-lg shadow hover:bg-yellow-600 transition duration-200 mr-2"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => onDeleteExpense(expense.id)} // Call delete function
+                    onClick={() => onDeleteExpense(expense.id)}
                     className="bg-red-500 text-white py-1 px-2 rounded-lg shadow hover:bg-red-600 transition duration-200"
                   >
                     Delete

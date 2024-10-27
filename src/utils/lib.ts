@@ -10,9 +10,9 @@ export const login = (username: string, password: string) => {
     const userExists = users.some((user: any) => user.username === username && user.password === password);
     if (userExists) {
         localStorage.setItem("authToken", JSON.stringify({ username }));
-        return true; 
+        return true;
     }
-    return false; 
+    return false;
 };
 
 
@@ -22,4 +22,9 @@ export const logout = () => {
 
 export const isAuthenticated = () => {
     return Boolean(localStorage.getItem("authToken"));
+};
+
+export const getLoggedInUser = (): string | null => {
+    const authData = localStorage.getItem("authToken");
+    return authData ? JSON.parse(authData).username : null;
 };

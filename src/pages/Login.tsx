@@ -10,21 +10,21 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     setLoading(true);
-    setError(null); // Reset error on each attempt
+    setError(null);
 
     try {
-      const success = await login(username, password); // Simulate login API
+      const success = await login(username, password);
       if (success) {
-        navigate("/"); // Redirect to home on success
+        navigate("/");
       } else {
-        setError("Invalid credentials! Please try again."); // Display error on failure
+        setError("Invalid credentials! Please try again.");
       }
     } catch (err) {
       setError("An error occurred. Please try again later.");
     } finally {
-      setLoading(false); // Stop loading state
+      setLoading(false);
     }
   };
 

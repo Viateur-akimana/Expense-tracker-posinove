@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Expense } from "../types/expense";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Expense } from '../types/expense';
 import { v4 as uuidv4 } from "uuid";
 
 type Props = {
   onAddExpense: (expense: Expense) => void;
-  editingExpense: Expense | null; // Prop for editing
 };
 
 const categories = [
@@ -21,27 +19,11 @@ const categories = [
   "Other",
 ];
 
-const ExpenseForm: React.FC<Props> = ({ onAddExpense, editingExpense }) => {
+const ExpenseForm: React.FC<Props> = ({ onAddExpense }) => {
   const [amount, setAmount] = useState<number | "">("");
   const [category, setCategory] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const navigate = useNavigate();
-
-  // Populate form fields if editing an existing expense
-  useEffect(() => {
-    if (editingExpense) {
-      setAmount(editingExpense.amount);
-      setCategory(editingExpense.category);
-      setDate(editingExpense.date);
-      setDescription(editingExpense.description);
-    } else {
-      setAmount("");
-      setCategory("");
-      setDate("");
-      setDescription("");
-    }
-  }, [editingExpense]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +33,7 @@ const ExpenseForm: React.FC<Props> = ({ onAddExpense, editingExpense }) => {
     }
 
     const newExpense: Expense = {
-      id: editingExpense ? editingExpense.id : uuidv4(), // Use existing id for editing
+      id: uuidv4(),
       amount: Number(amount),
       category,
       date,
@@ -59,12 +41,20 @@ const ExpenseForm: React.FC<Props> = ({ onAddExpense, editingExpense }) => {
     };
 
     onAddExpense(newExpense);
-    navigate("/"); // Navigate back to home or another route after submission
+    resetForm();
+  };
+
+  // Function to reset form fields
+  const resetForm = () => {
+    setAmount("");
+    setCategory("");
+    setDate("");
+    setDescription("");
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-6 bg-white rounded-lg shadow-md max-w-md mx-auto">
-      <h2 className="text-xl font-semibold mb-4 text-center">{editingExpense ? "Update Expense" : "Add Expense"}</h2>
+      <h2 className="text-xl font-semibold mb-4 text-center">Add Expense</h2>
       <div className="mb-4">
         <input
           type="number"
@@ -104,7 +94,7 @@ const ExpenseForm: React.FC<Props> = ({ onAddExpense, editingExpense }) => {
         />
       </div>
       <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full hover:bg-blue-600 transition duration-200">
-        {editingExpense ? "Update Expense" : "Add Expense"}
+        Add New Expense
       </button>
     </form>
   );
